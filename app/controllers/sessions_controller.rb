@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class SessionsController < ApplicationController
   skip_before_action :authenticate_token
 
   def create
     user = User.find_by(email: params[:email])
 
-    if user && user.authenticate(params[:password])
+    if user&.authenticate(params[:password])
       token = encode_token(user_id: user.id)
       render json: { token: }
     else
