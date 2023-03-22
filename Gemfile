@@ -24,4 +24,5 @@ group :development do
   # gem "spring"
 end
 
+gem 'active_storage-postgresql'
 gem 'jwt'
