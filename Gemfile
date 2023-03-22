@@ -25,4 +25,5 @@ group :development do
 end
 
 gem 'active_storage-postgresql'
+gem 'aws-sdk-s3', require: false
 gem 'jwt'
