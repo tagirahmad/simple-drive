@@ -3,8 +3,10 @@
 require 'rails_helper'
 
 describe V1::BlobsController, type: :request do
-  let(:user)  { User.create!(email: 'test@gmail.com', password: 'testqwerty') }
+  let(:user) { User.create!(email: 'test@gmail.com', password: 'testqwerty') }
+  let(:second_user) { User.create!(email: 'test2@gmail.com', password: 'testqwerty') }
   let(:token) { TokenService::Encode.new.call(user_id: user.id) }
+  let(:second_user_token) { TokenService::Encode.new.call(user_id: second_user.id) }
   let(:headers_with_token) { { headers: { 'Authorization': "Bearer #{token}" } } }
 
   describe '#create /blobs' do
@@ -29,6 +31,20 @@ describe V1::BlobsController, type: :request do
         it 'successfully creates and saves new blob to local storage by default' do
           expect { post v1_blobs_path, params: { id: 1, data: 'SGkgYWdhaW4=' }, **headers_with_token }
             .to change(ActiveStorage::Blob, :count).by 1
+        end
+      end
+
+      describe 'when invalid token provided' do
+        it 'responses with error text and does not create new blob' do
+          headers_with_invalid_token = { headers: { 'Authorization': 'Bearer invalid_token' } }
+
+          post v1_blobs_path, params: { id: 1, data: 'SGkgYWdhaW4=' }, **headers_with_invalid_token
+
+          expect(response.body).to include 'invalid token'
+          expect do
+            post v1_blobs_path, params: { id: 1, data: 'SGkgYWdhaW4=' }, **headers_with_invalid_token
+          end
+            .to change(ActiveStorage::Blob, :count).by 0
         end
       end
 
@@ -73,6 +89,16 @@ describe V1::BlobsController, type: :request do
           blob = BlobService::Blob::Prepare.new.call(1, 'SGkgYWdhaW4=', user:, storage: :local)
 
           get v1_blob_path(blob), **headers_with_token
+
+          expect(response).to have_http_status :not_found
+        end
+      end
+
+      describe 'when someone else\'s token provided' do
+        it 'responses with error text and does not create new blob' do
+          blob = BlobService::Blob::Prepare.new.call(1, 'SGkgYWdhaW4=', user:, storage: :local)
+
+          get v1_blob_path(blob), headers: { 'Authorization': "Bearer #{second_user_token}" }
 
           expect(response).to have_http_status :not_found
         end
