@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::API
+  include ActionController::HttpAuthentication::Token::ControllerMethods
+
   before_action :authenticate_token
 
   attr_reader :current_user
@@ -8,8 +10,10 @@ class ApplicationController < ActionController::API
   private
 
   def authenticate_token
-    user_id = TokenService::Authenticate.new.call(request)
-    @current_user = User.find(user_id)
+    authenticate_or_request_with_http_token do |token, _options|
+      user_id = TokenService::Authenticate.new.call(token)
+      @current_user = User.find(user_id)
+    end
   rescue JWT::DecodeError
     render json: { error: 'invalid token' }, status: :unprocessable_entity
   rescue StandardError => e
