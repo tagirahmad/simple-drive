@@ -11,7 +11,7 @@ class ApplicationController < ActionController::API
 
   def authenticate_token
     authenticate_or_request_with_http_token do |token, _options|
-      user_id = TokenService::Authenticate.new.call(token)
+      user_id = Token::Authenticate.new.call(token)
       @current_user = User.find(user_id)
     end
   rescue JWT::DecodeError

@@ -5,8 +5,8 @@ require 'rails_helper'
 describe V1::BlobsController, type: :request do
   let(:user) { User.create!(email: 'test@gmail.com', password: 'testqwerty') }
   let(:second_user) { User.create!(email: 'test2@gmail.com', password: 'testqwerty') }
-  let(:token) { TokenService::Encode.new.call(user_id: user.id) }
-  let(:second_user_token) { TokenService::Encode.new.call(user_id: second_user.id) }
+  let(:token) { Token::Encode.new.call(user_id: user.id) }
+  let(:second_user_token) { Token::Encode.new.call(user_id: second_user.id) }
   let(:headers_with_token) { { headers: { 'Authorization': "Bearer #{token}" } } }
 
   describe '#create /blobs' do
@@ -75,7 +75,7 @@ describe V1::BlobsController, type: :request do
     describe 'with valid params' do
       context 'if record exists' do
         it 'successfully retrieves a blob' do
-          blob = BlobService::Blob.create(1, 'SGkgYWdhaW4=', user:, storage: :local)
+          blob = Blob::Uploader.call(1, 'SGkgYWdhaW4=', user:, storage: :local)
 
           get v1_blob_path(blob), **headers_with_token
 
@@ -86,7 +86,7 @@ describe V1::BlobsController, type: :request do
 
       context 'if record does not exist' do
         it 'returns 404 status code' do
-          blob = BlobService::Blob::Prepare.new.call(1, 'SGkgYWdhaW4=', user:, storage: :local)
+          blob = Blob::Uploader::Prepare.new.call(1, 'SGkgYWdhaW4=', user:, storage: :local)
 
           get v1_blob_path(blob), **headers_with_token
 
@@ -96,7 +96,7 @@ describe V1::BlobsController, type: :request do
 
       describe 'when someone else\'s token provided' do
         it 'responses with error text and does not create new blob' do
-          blob = BlobService::Blob::Prepare.new.call(1, 'SGkgYWdhaW4=', user:, storage: :local)
+          blob = Blob::Uploader::Prepare.new.call(1, 'SGkgYWdhaW4=', user:, storage: :local)
 
           get v1_blob_path(blob), headers: { 'Authorization': "Bearer #{second_user_token}" }
 

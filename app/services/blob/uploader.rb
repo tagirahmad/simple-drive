@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-module BlobService
-  module Blob
+module Blob
+  module Uploader
     DEFAULT_STORAGE = :local
 
-    def self.create(id, data, **options)
+    def self.call(id, data, **options)
       raise ActiveRecord::RecordNotUnique if ActiveStorage::Blob.exists?(id)
 
       blob = Prepare.new.call(id, data, **options)

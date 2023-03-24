@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module TokenService
+module Token
   class Authenticate
     def call(token)
       raise StandardError, 'token is not provided' unless token.is_a?(String)
