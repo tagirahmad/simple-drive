@@ -23,7 +23,7 @@ describe V1::BlobsController, type: :request do
         it 'responses with the blob' do
           post v1_blobs_path, **valid_params_with_storage
 
-          expect(response.body).to include 'id', 'data', 'size', 'created_at'
+          expect(response).to match_response_schema('blob')
         end
       end
 

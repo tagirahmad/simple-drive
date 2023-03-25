@@ -69,6 +69,9 @@ GEM
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
+    addressable (2.8.1)
+      public_suffix (>= 2.0.2, < 6.0)
+    alba (2.2.0)
     ast (2.4.2)
     aws-eventstream (1.2.0)
     aws-partitions (1.731.0)
@@ -107,6 +110,8 @@ GEM
       reline (>= 0.3.0)
     jmespath (1.6.2)
     json (2.6.3)
+    json-schema (3.0.0)
+      addressable (>= 2.8)
     jwt (2.7.0)
     loofah (2.19.1)
       crass (~> 1.0.2)
@@ -133,10 +138,12 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.14.2-x86_64-darwin)
       racc (~> 1.4)
+    oj (3.14.2)
     parallel (1.22.1)
     parser (3.2.1.1)
       ast (~> 2.4.1)
     pg (1.4.6)
+    public_suffix (5.0.1)
     puma (5.6.5)
       nio4r (~> 2.0)
     racc (1.6.2)
@@ -225,11 +232,14 @@ PLATFORMS
 
 DEPENDENCIES
   active_storage-postgresql
+  alba
   aws-sdk-s3
   bcrypt
   bootsnap
   debug
+  json-schema
   jwt
+  oj
   pg (~> 1.1)
   puma (~> 5.0)
   rails (~> 7.0.4, >= 7.0.4.3)

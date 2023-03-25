@@ -19,11 +19,17 @@ group :development, :test do
   gem 'rubocop-rspec'
 end
 
+group :test do
+  gem 'json-schema'
+end
+
 group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
 end
 
 gem 'active_storage-postgresql'
+gem 'alba'
 gem 'aws-sdk-s3', require: false
 gem 'jwt'
+gem 'oj'
