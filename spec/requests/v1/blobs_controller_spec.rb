@@ -86,7 +86,7 @@ describe V1::BlobsController, type: :request do
 
       context 'if record does not exist' do
         it 'returns 404 status code' do
-          blob = Blob::Uploader::Prepare.new.call(1, 'SGkgYWdhaW4=', user:, storage: :local)
+          blob = Blob::ActiveStorage::Uploader::Prepare.new.call(1, 'SGkgYWdhaW4=', user:, storage: :local)
 
           get v1_blob_path(blob), **headers_with_token
 
@@ -96,7 +96,7 @@ describe V1::BlobsController, type: :request do
 
       describe 'when someone else\'s token provided' do
         it 'responses with error text and does not create new blob' do
-          blob = Blob::Uploader::Prepare.new.call(1, 'SGkgYWdhaW4=', user:, storage: :local)
+          blob = Blob::ActiveStorage::Uploader::Prepare.new.call(1, 'SGkgYWdhaW4=', user:, storage: :local)
 
           get v1_blob_path(blob), headers: { 'Authorization': "Bearer #{second_user_token}" }
 

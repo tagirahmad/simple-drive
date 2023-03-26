@@ -2,6 +2,17 @@
 
 Simple Drive is a Ruby on Rails application that provides APIs to store and retrieve objects or files.
 
+## Description
+For tracking blobs default ActiveStorage tables is used.
+
+`active_storage_blobs` stores data about uploaded files, such as filename and content type.
+
+`active_storage_attachments` is a polymorphic table that connects Users with blobs
+
+Also, it's necessary to mention, you can specify your own service different from ActiveStorage implementation.
+Just implement your own service, make adapter class like `Blob::Adapters::NewAdapter::Uploader`
+and pass it into `Blob::Uploader.call(..., adapter: Blob::Adapters::NewAdapter::Uploader)`.
+
 ## Requirements
 Ruby >= 3.1.2
 
@@ -130,4 +141,4 @@ Otherwise the server will respond with 401 status code and message HTTP Token: A
 Tests are covered only for main parts of the app, I didn't chase 100% test coverage:
 
 - Unit tests for `Blob services`
-- Integration tests for `BlobsControllers`.
+- Integration tests for `BlobsController`.

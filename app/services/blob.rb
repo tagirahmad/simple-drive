@@ -1,5 +1,5 @@
-require_relative 'blob/checker'
-require_relative 'blob/uploader'
+# frozen_string_literal: true
+
 require_relative 'blob/errors'
 
 module Blob; end

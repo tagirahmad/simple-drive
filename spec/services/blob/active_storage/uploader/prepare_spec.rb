@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Blob::Uploader::Prepare do
+describe Blob::ActiveStorage::Uploader::Prepare do
   describe '#call' do
     it 'instantiates ActiveStorage::Blob with specified parameters' do
       service = described_class.new

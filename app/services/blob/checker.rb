@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Blob
   module Checker
     def self.call(id, data)

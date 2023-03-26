@@ -10,7 +10,8 @@ module V1
       id   = params[:id]
       data = params[:data]
 
-      blob = Blob::Uploader.call(id, data, user: current_user, storage: params[:storage])
+      blob = Blob::Uploader.call(id, data, user: current_user, storage: params[:storage],
+                                           adapter: Blob::Adapters::ActiveStorage::Uploader)
 
       render json: BlobResource.new(blob).serialize
     rescue ActiveRecord::RecordNotUnique

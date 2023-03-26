@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Blob::Uploader do
+describe Blob::ActiveStorage::Uploader do
   describe '.create' do
     let(:service) { described_class }
     let(:user) { User.first_or_create!(email: 'test@gmail.com', password: 'testqwerty') }
